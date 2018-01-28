@@ -1,0 +1,226 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int data;          
+    struct node *next; 
+}*head,*temp;
+
+
+void createList(int n);
+void insertNodeAtBeginning(int data);
+void insert(int pos,int data);
+void insertNodeAtEnd(int data);
+void del(int pos);
+void displayList();
+
+
+int main()
+{
+    int n, data,pos,t;
+
+
+    printf("Enter the total number of nodes: ");
+    scanf("%d", &n);
+    createList(n);
+
+    printf("\nData in the list \n");
+    displayList();
+
+    do{
+    
+    printf("enter 1.insert at beginning\n2.insert at end\n3.delete at specific pos\n4.insert at specific pos\n5.print the list\n");
+    scanf("%d",&t);
+    switch(t)
+    {
+    	
+    case 1: printf("\nEnter data to insert at beginning of the list: ");
+    		scanf("%d", &data);
+    		insertNodeAtBeginning(data);
+    		break;
+    case 2:printf("\nenter data to insert at the end of the node");
+    		scanf("%d",&data);
+    		insertNodeAtEnd(data);
+    		break;
+    case 3:printf("specify pos to delete an element in the list\n");
+    		scanf("%d",&pos);
+    		del(pos);
+    		break;
+    
+    case 4:printf("insert node at specific pos");
+    		printf("enter data and pos\n");
+    		scanf("%d%d",&data,&pos);
+    		insert(pos,data);
+    		break;
+    case 5:printf("\nData in the list \n");
+    	   displayList();
+           break;
+
+    default:printf("invalid input\n");
+}
+}while(t!=6);
+    return 0;
+}
+
+void createList(int n)
+{
+    struct node *newNode;
+    int data, i;
+
+    head = (struct node *)malloc(sizeof(struct node));
+
+    /*
+     * If unable to allocate memory for head node
+     */
+    if(head == NULL)
+    {
+        printf("Unable to allocate memory.");
+    }
+    else
+    {
+        /*
+         * Input data of node from the user
+         */
+        printf("Enter the data of node 1: ");
+        scanf("%d", &data);
+
+        head->data = data; // Link data field with data
+        head->next = NULL; // Link address field to NULL
+
+        temp = head;
+
+        /*
+         * Create n nodes and adds to linked list
+         */
+        for(i=2; i<=n; i++)
+        {
+            newNode = (struct node *)malloc(sizeof(struct node));
+
+            /* If memory is not allocated for newNode */
+            if(newNode == NULL)
+            {
+                printf("Unable to allocate memory.");
+                break;
+            }
+            else
+            {
+                printf("Enter the data of node %d: ", i);
+                scanf("%d", &data);
+
+                newNode->data = data; // Link data field of newNode with data
+                newNode->next = NULL; // Link address field of newNode with NULL
+
+                temp->next = newNode; // Link previous node i.e. temp to the newNode
+                
+                temp = temp->next; 
+            }
+        }
+
+        printf("SINGLY LINKED LIST CREATED SUCCESSFULLY\n");
+    }
+}
+
+
+/*
+ * Create a new node and inserts at the beginning of the linked list.
+ */
+void insertNodeAtBeginning(int data)
+{
+    struct node *newNode;
+
+    newNode = (struct node*)malloc(sizeof(struct node));
+
+    if(newNode == NULL)
+    {
+        printf("Unable to allocate memory.");
+    }
+    else
+    {
+        newNode->data = data; // Link data part
+        newNode->next = head; // Link address part
+
+        head = newNode;          // Make newNode as first node
+
+        printf("DATA INSERTED SUCCESSFULLY\n");
+    }
+}
+void insertNodeAtEnd(int data)
+{
+	struct node *newNode;
+
+    newNode = (struct node*)malloc(sizeof(struct node));
+
+    if(newNode == NULL)
+    {
+        printf("Unable to allocate memory.");
+    }
+    else
+    {
+    	newNode->data=data;
+    	newNode->next=NULL;
+    	temp->next=newNode;
+    }
+}
+
+
+
+void displayList()
+{
+    struct node *temp;
+
+
+    if(head == NULL)
+    {
+        printf("List is empty.");
+    }
+    else
+    {
+        temp = head;
+        while(temp != NULL)
+        {
+            printf("Data = %d\n", temp->data); 
+            temp = temp->next;                 
+        }
+    }
+}
+void del(int pos)
+{
+   struct node *current;
+   current=(struct node*)malloc(sizeof(struct node));
+   int count=1;
+   temp=head;
+   if(pos==1)
+   {
+   	head=temp->next;
+   	delete temp;
+   }
+	else
+	{
+		while(count!=pos-1)
+		{
+			temp=temp->next;
+			if(temp==NULL)
+			printf("invalid pos given\n");
+			
+			count++;
+		}
+		current=temp->next;
+		temp->next=current->next;
+		delete current;
+	}
+}
+void insert(int pos,int data)
+{
+	struct node *newnode;
+	newnode=(struct node*)malloc(sizeof(struct node));
+	int count=1;
+	while(count!=pos-1)
+	{
+		temp=temp->next;
+		count++;
+	}
+	newnode->data=data;
+	newnode->next=temp->next;
+	temp->next=newnode;
+	
+}
